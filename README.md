@@ -1,6 +1,6 @@
 # WRDS Extraction and Bankruptcy Modelling Pipeline
 
-`BP_Aug_30_SUBMISSION.ipynb` builds a monthly, point-in-time bankruptcy-prediction panel for U.S. listed (and later delisted) firms from Compustat FUNDA, CRSP-Compustat (CCM), CRSP monthly stock/index files, Mergent FISD bankruptcy filings, IBES analyst forecasts and short-interest data, then trains and evaluates Random Forest, XGBoost, LightGBM, SVM and Neural Network models against various data sets.
+`BP_Aug_30_Submission.ipynb` builds a monthly, point-in-time bankruptcy-prediction panel for U.S. listed (and later delisted) firms from Compustat FUNDA, CRSP-Compustat (CCM), CRSP monthly stock/index files, Mergent FISD bankruptcy filings, IBES analyst forecasts and short-interest data, then trains and evaluates Random Forest, XGBoost, LightGBM, SVM and Neural Network models against various data sets.
 
 The notebook has **two run modes**:
 
@@ -101,7 +101,7 @@ Use this route only when the required WRDS subscriptions and credentials are ava
 3. Run Step 2A **before any extraction or modelling cells**.
 4. Step 2A removes prior generated material from the pipeline output locations, including the main results tree, prior WRDS raw extracts, generated final datasets, logs and validation artefacts. It also checks legacy `results/` and `validation/` locations relative to the notebook working directory.
 5. Step 2A recreates the empty directory structure required by later cells.
-6. Run **Pipeline Step 2B **.
+6. Run **Pipeline Step 2B**.
 7. Step 2B is an independent safeguard: it scans the generated-output locations and stops with an `AssertionError` if stale files remain.
 8. Do not continue unless Step 2B reports:
    ```
@@ -126,7 +126,7 @@ cd bankruptcy-pipeline
 
 # 2. Put the notebook, README.md, requirements.txt, and your data folder here, e.g.:
 #    bankruptcy-pipeline/
-#      BP_Aug_30_SUBMISSION.ipynb
+#      BP_Aug_30_Submission.ipynb
 #      README.md
 #      requirements.txt
 #      Final/data/final/wrds_bankruptcy_engineered.csv
@@ -150,7 +150,7 @@ jupyter lab
 ```
 
 Then in the browser tab that opens:
-1. Open `BP_Aug_30_SUBMISSION.ipynb`
+1. Open `BP_Aug_30_Submission.ipynb`
 2. In the Step 2A config cell, set `USE_WRDS = False` (unless you have your own WRDS credentials — then set your `WRDS_USERNAME` instead)
 3. Run all cells: **Run → Run All Cells** (or **Kernel → Restart Kernel and Run All Cells**)
 
@@ -159,7 +159,7 @@ Then in the browser tab that opens:
 To run the whole notebook end-to-end from the terminal and save an executed copy:
 
 ```bash
-jupyter nbconvert --to notebook --execute BP_Aug_30_SUBMISION.ipynb --output BP_Aug_30_SUBMISSION.ipynb
+jupyter nbconvert --to notebook --execute BP_Aug_30_Submission.ipynb --output BP_Aug_30_Submission_executed.ipynb
 ```
 
 The sections below cover requirements, file placement, and configuration in more detail.
@@ -223,7 +223,7 @@ If none of these files are found, the notebook raises a `FileNotFoundError` nami
 1. Copy the notebook, README, requirements file and (for local mode) the supplied engineered CSV into the project structure, for example:
    ```
    project/
-     BP_Aug_30_SUBMISSION.ipynb
+     BP_Aug_30_Submission.ipynb
      README.md
      requirements.txt
      Final/
@@ -239,7 +239,7 @@ If none of these files are found, the notebook raises a `FileNotFoundError` nami
    # or
    jupyter notebook
    ```
-5. Open `BP_Aug_30_SUBMISSION.ipynb`.
+5. Open `BP_Aug_30_Submission.ipynb`.
 6. Run Pipeline Step 1.
 7. In **Step 2A**, choose the operating mode:
    ```python
@@ -251,7 +251,7 @@ If none of these files are found, the notebook raises a `FileNotFoundError` nami
 9. Only after Step 2B reports the appropriate `READY` message should the remaining cells be run from top to bottom.
 ---
 
-## 4. Running in WRDS mode (— requires WRDS access)
+## 4. Running in WRDS mode (requires WRDS access)
 
 A live run requires an institutional WRDS subscription covering the source databases used by the notebook.
 
