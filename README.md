@@ -69,7 +69,7 @@ Use this route if you cannot connect to WRDS or do not have an institutional WRD
 1. Obtain the supplied feature-engineered file `wrds_bankruptcy_engineered.csv`.
 2. Put it in:
    ```
-   <BP_PROJECT_ROOT>/data/final/wrds_bankruptcy_engineered.csv
+   <BP_PROJECT_ROOT>/wrds_bankruptcy_data/final/wrds_bankruptcy_engineered.csv
    ```
 3. Set the `BP_PROJECT_ROOT` environment variable to the `Final` project/output directory.
 4. Start Jupyter or VS Code and open the notebook.
@@ -129,7 +129,7 @@ cd bankruptcy-pipeline
 #      BP_Aug_30_Submission.ipynb
 #      README.md
 #      requirements.txt
-#      Final/data/final/wrds_bankruptcy_engineered.csv
+#      Final/wrds_bankruptcy_data/final/wrds_bankruptcy_engineered.csv
 
 # 3. Create and activate a virtual environment
 python3 -m venv venv
@@ -209,7 +209,7 @@ If you don't need WRDS mode, you can remove/skip the `wrds` line in `requirement
 
 ## 2. Files needed to run in local mode
 
-Place these in the notebook's data folder (see "Output/data locations" below — default is `./Final/data/final/`, but confirm against whatever `FINAL_DIR` resolves to when you run the config cell):
+Place these in the notebook's data folder (see "Output/data locations" below — default is `./Final/wrds_bankruptcy_data/final/`, but confirm against whatever `FINAL_DIR` resolves to when you run the config cell):
 
 - `wrds_bankruptcy_engineered.csv` — the full merged, feature-engineered panel (`model_df`). This is the primary file the notebook looks for.
 - Optional fallbacks the loader will also check, in order: `final_dataset.csv`, the file pointed to by `MODEL_FILE`, `train_dataset.csv`, `validation_dataset.csv`, `test_dataset.csv`.
@@ -296,7 +296,7 @@ Sub-folders created automatically under `PROJECT_ROOT`:
 - `results/baseline/per_feature_set/` — Word (`.docx`) and Excel (`.xlsx`) comparison tables
 - `results/calibration/` — reliability curve plots
 - `validation/` — look-ahead-bias audit sample (`lookahead_violations_sample.csv`)
-- `data/final/` — where the engineered CSV / train/validation/test CSVs are expected/saved
+- `wrds_bankruptcy_data/final/` — where the engineered CSV / train/validation/test CSVs are expected/saved
 
 ---
 
