@@ -1,0 +1,22 @@
+# Core data handling
+pandas>=1.5
+numpy>=1.23
+
+# Machine learning
+scikit-learn>=1.2
+xgboost>=1.7
+lightgbm>=3.3
+tensorflow>=2.12
+
+# Plotting
+matplotlib>=3.6
+
+# Output formatting (Excel / Word tables)
+openpyxl>=3.1
+python-docx>=0.8.11
+
+# WRDS data access (only required if USE_WRDS = True)
+wrds>=3.1
+
+# Jupyter environment
+jupyterlab>=3.6

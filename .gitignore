@@ -1,0 +1,34 @@
+# Proprietary / licensed WRDS data
+wrds_bankruptcy_data/
+data/
+raw/
+final/
+logs/
+
+# Derived datasets / predictions
+results/
+validation/
+
+# Credentials / secrets
+.env
+.env.*
+credentials*
+secrets*
+*.pem
+*.key
+
+# Python / Jupyter
+__pycache__/
+*.py[cod]
+.ipynb_checkpoints/
+.venv/
+venv/
+
+# Windows / VS Code
+Thumbs.db
+.DS_Store
+.vscode/
+
+# Temporary Microsoft Office files
+~$*.docx
+~$*.xlsx
