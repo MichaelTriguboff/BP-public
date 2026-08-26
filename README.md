@@ -13,6 +13,8 @@ The notebook has **two run modes**:
 
 The project is intended to support both a complete restricted research environment and a curated public reproducibility repository.
 
+**README policy:** the same `README.md` should be maintained in the main working copy, private repository and public repository. Repository-specific differences are described within this single README rather than by maintaining divergent instructions.
+
 | Capability / Content | Private repository | Public repository |
 |---|---:|---:|
 | Complete notebook | ✓ | ✓ |
@@ -71,20 +73,19 @@ Use this route if you cannot connect to WRDS or do not have an institutional WRD
    ```
    <BP_PROJECT_ROOT>/wrds_bankruptcy_data/final/wrds_bankruptcy_engineered.csv
    ```
-3. Set the `BP_PROJECT_ROOT` environment variable to the `Final` project/output directory.
-4. Start Jupyter or VS Code and open the notebook.
-5. In **Pipeline Step 2A**, set:
+3. Start Jupyter or VS Code **from the repository root** and open the notebook. The notebook now resolves `PROJECT_ROOT` automatically to the directory from which the project is being run; no `BP_PROJECT_ROOT` environment variable is required for the standard grader/local workflow.
+4. In **Pipeline Step 2A**, leave the submission/grader default:
    ```python
    USE_WRDS = False
    ```
-6. Run Step 2A. In local mode the cleanup routine is deliberately skipped, so the supplied engineered dataset is preserved.
-7. Run **Pipeline Step 2B**. It checks that a supported local modelling dataset exists. It does **not** require `FUNDA_FILE`, `CCM_FILE` or `CRSP_FILE`.
-8. Confirm that Step 2B ends with:
+5. Run Step 2A. In local mode the cleanup routine is deliberately skipped, so the supplied engineered dataset is preserved.
+6. Run **Pipeline Step 2B**. It checks that a supported local modelling dataset exists. It does **not** require `FUNDA_FILE`, `CCM_FILE` or `CRSP_FILE`.
+7. Confirm that Step 2B ends with:
    ```
    READY TO RUN USING LOCAL DATA
    Pre-flight OK — safe to run the rest of the pipeline.
    ```
-9. Run the remaining notebook cells from top to bottom.
+8. Run the remaining notebook cells from top to bottom.
 
 The preferred local input is `wrds_bankruptcy_engineered.csv`. Supported alternatives are `final_dataset.csv`, a configured `MODEL_FILE`, or all three split files (`train_dataset.csv`, `validation_dataset.csv`, and `test_dataset.csv`).
 
@@ -120,16 +121,18 @@ A WRDS run is intended to be a fresh end-to-end reconstruction. Removing previou
 ## Quickstart (terminal)
 
 ```bash
-# 1. Create a project folder and move into it
-mkdir bankruptcy-pipeline
-cd bankruptcy-pipeline
+# 1. Clone/open the repository and move to its root
+cd <cloned-repository>
 
-# 2. Put the notebook, README.md, requirements.txt, and your data folder here, e.g.:
-#    bankruptcy-pipeline/
+# 2. Standard local/private layout:
+#    <cloned-repository>/
 #      BP_Aug_30_Submission.ipynb
 #      README.md
 #      requirements.txt
-#      Final/wrds_bankruptcy_data/final/wrds_bankruptcy_engineered.csv
+#      wrds_bankruptcy_data/final/wrds_bankruptcy_engineered.csv
+#
+# In the public repository the licensed engineered CSV is intentionally absent.
+# An authorised user may place a copy at the path above.
 
 # 3. Create and activate a virtual environment
 python3 -m venv venv
@@ -140,9 +143,9 @@ source venv/bin/activate          # macOS/Linux
 pip install --upgrade pip
 pip install -r requirements.txt
 
-# 5. (Optional) point output/data to a custom location instead of ./Final
-export BP_PROJECT_ROOT="$(pwd)/Final"     # macOS/Linux
-# setx BP_PROJECT_ROOT "C:\path\to\Final" # Windows (restart terminal after)
+# 5. Launch Jupyter from the repository root
+# PROJECT_ROOT will resolve automatically to this directory.
+# No BP_PROJECT_ROOT environment variable is required.
 
 # 6. Launch Jupyter
 jupyter lab
@@ -151,7 +154,7 @@ jupyter lab
 
 Then in the browser tab that opens:
 1. Open `BP_Aug_30_Submission.ipynb`
-2. In the Step 2A config cell, set `USE_WRDS = False` (unless you have your own WRDS credentials — then set your `WRDS_USERNAME` instead)
+2. In Step 2A, leave `USE_WRDS = False` for the standard local/grader route. For a fresh WRDS rebuild, change it to `True` and supply your own `WRDS_USERNAME`.
 3. Run all cells: **Run → Run All Cells** (or **Kernel → Restart Kernel and Run All Cells**)
 
 ### Non-interactive execution (no browser UI)
@@ -209,7 +212,7 @@ If you don't need WRDS mode, you can remove/skip the `wrds` line in `requirement
 
 ## 2. Files needed to run in local mode
 
-Place these in the notebook's data folder (see "Output/data locations" below — default is `./Final/wrds_bankruptcy_data/final/`, but confirm against whatever `FINAL_DIR` resolves to when you run the config cell):
+Place these in the notebook's data folder (see "Output/data locations" below). For the standard portable setup, `PROJECT_ROOT` is the repository root and the expected directory is `./wrds_bankruptcy_data/final/`:
 
 - `wrds_bankruptcy_engineered.csv` — the full merged, feature-engineered panel (`model_df`). This is the primary file the notebook looks for.
 - Optional fallbacks the loader will also check, in order: `final_dataset.csv`, the file pointed to by `MODEL_FILE`, `train_dataset.csv`, `validation_dataset.csv`, `test_dataset.csv`.
@@ -226,29 +229,27 @@ If none of these files are found, the notebook raises a `FileNotFoundError` nami
      BP_Aug_30_Submission.ipynb
      README.md
      requirements.txt
-     Final/
-       data/
-         final/
-           wrds_bankruptcy_engineered.csv
+     wrds_bankruptcy_data/
+       final/
+         wrds_bankruptcy_engineered.csv
    ```
 2. Create and activate a virtual environment, then install the packages from `requirements.txt`.
-3. Set `BP_PROJECT_ROOT` to the `Final` directory.
-4. Launch Jupyter from the project directory:
+3. Launch Jupyter from the repository/project root. `PROJECT_ROOT` resolves automatically to that directory; no environment variable is required for the standard workflow:
    ```bash
    jupyter lab
    # or
    jupyter notebook
    ```
-5. Open `BP_Aug_30_Submission.ipynb`.
-6. Run Pipeline Step 1.
-7. In **Step 2A**, choose the operating mode:
+4. Open `BP_Aug_30_Submission.ipynb`.
+5. Run the Environment Setup/configuration cells from the beginning.
+6. In **Step 2A**, choose the operating mode:
    ```python
    USE_WRDS = False   # local engineered-data reproduction
    # OR
    USE_WRDS = True    # fresh WRDS extraction
    ```
-8. Run Step 2A, then Step 2B. Read the printed pre-flight output before continuing.
-9. Only after Step 2B reports the appropriate `READY` message should the remaining cells be run from top to bottom.
+7. Run Step 2A, then Step 2B. Read the printed pre-flight output before continuing.
+8. Only after Step 2B reports the appropriate `READY` message should the remaining cells be run from top to bottom.
 ---
 
 ## 4. Running in WRDS mode (requires WRDS access)
@@ -274,19 +275,19 @@ The cleanup is intentionally restricted to `USE_WRDS = True`. Local mode must re
 
 ---
 
-## 5. Configuring output location
+## 5. Configuring project/output location
 
-By default, all results and intermediate files are written to `./Final` relative to wherever you launch Jupyter. To redirect this (e.g. to a shared drive or a consistent path across machines), set the environment variable **before** starting Jupyter:
+By default, `PROJECT_ROOT` is the directory from which the notebook/project is being run (`Path.cwd().resolve()`). This is the submission/grader configuration and makes a cloned repository portable: a clone in `Grader_Test`, for example, automatically uses `Grader_Test` rather than a machine-specific path.
 
-```bash
-# macOS/Linux
-export BP_PROJECT_ROOT="/path/to/output/Final"
-jupyter lab
+No `BP_PROJECT_ROOT` environment variable is required in the standard workflow. Step 2B likewise no longer requires that environment variable; it validates the resolved `PROJECT_ROOT`, directory structure and selected local dataset directly.
 
-# Windows PowerShell (persists across sessions)
-setx BP_PROJECT_ROOT "C:\Users\<you>\Dev\Final"
-# then restart your terminal / Jupyter
+A custom root remains available for an intentional non-standard installation. In the Environment Setup cell, set:
+
+```python
+USE_CUSTOM_PROJECT_ROOT = True
 ```
+
+and define `BP_PROJECT_ROOT` before launching Jupyter/VS Code. If `USE_CUSTOM_PROJECT_ROOT = False` (the default), any pre-existing `BP_PROJECT_ROOT` environment variable is ignored.
 
 Sub-folders created automatically under `PROJECT_ROOT`:
 - `results/` — model comparison tables, plots
@@ -302,7 +303,7 @@ Sub-folders created automatically under `PROJECT_ROOT`:
 
 ## 6. What the notebook produces
 
-Running the full notebook (256 cells) produces, among other things:
+Running the full notebook produces, among other things:
 - A cleaned, point-in-time, forward-looking (12-month) bankruptcy hazard panel with a combined failure target (`distress_event_any`) drawing on CRSP delisting codes and Mergent FISD Chapter 11/7 filings
 - Three engineered feature sets: Barboza/Appendix, Shumway-style, and Combined
 - Trained Random Forest, XGBoost, LightGBM, SVM (optional), and Neural Network models per feature set, plus Altman (1968) and refit-logit baselines
